@@ -3,11 +3,11 @@ class _Fork{
   String value;                             // Значение, которое хранит узел.
   _Fork? left;                              // Ключ левого узла.
   _Fork? right;                             // Ключ правого узла.
-  _Fork(this.index, this.value);            // Конструктор.
+  _Fork(this.key, this.value);              // Конструктор.
 }
 
 class BTree{
-  _Fork root;                               // Корень дерева должен быть всегда, даже если он null.
+  _Fork? root;                               // Корень дерева должен быть всегда, даже если он null.
   
   /// Добавляет элемент.
   void add(int key, String value){
@@ -20,11 +20,11 @@ class BTree{
     //else if(newFork.key == root.key){
     //  root.value = newFork.value;
     //}
-    while((tempFork.key != null) or (tempFork.key != newFork.key)){
-      if (tempFork.key > newFork.key){
+    while((tempFork!.key != null) | (tempFork.key != newFork.key)){
+      if (tempFork.key! > newFork.key!){
         tempFork = tempFork.right;
       }
-      if (tempFork.key < newFork.key){
+      if (tempFork!.key! < newFork.key!){
         tempFork = tempFork.left;
       }
     }
