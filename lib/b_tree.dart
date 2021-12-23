@@ -1,38 +1,90 @@
-class _Fork{ 
-  int? key;                                 // Ключ узла.
-  String value;                             // Значение, которое хранит узел.
-  _Fork? left;                              // Ключ левого узла.
-  _Fork? right;                             // Ключ правого узла.
-  _Fork(this.key, this.value);              // Конструктор.
+import 'package:meta/meta.dart';
+@visibleForTesting
+class Fork{
+  @visibleForTesting
+  int key;                                 // Ключ узла.
+  @visibleForTesting
+  String value;                            // Значение, которое хранит узел.
+  @visibleForTesting
+  Fork? left;                              // Ключ левого узла.
+  @visibleForTesting
+  Fork? right;                             // Ключ правого узла.
+
+  Fork(this.key, this.value);              // Конструктор.
 }
 
 class BTree{
-  _Fork? root;                               // Корень дерева должен быть всегда, даже если он null.
+  @visibleForTesting
+  Fork? root;                               // Корень дерева должен быть всегда, даже если он null.
   
   /// Добавляет элемент.
   void add(int key, String value){
-    final newFork = _Fork(key, value);      // Добавляемый узел.
-    _Fork? tempFork = root;
-    //if (root == null){
-    //  root = newFork;
-    //}
-    
-    //else if(newFork.key == root.key){
-    //  root.value = newFork.value;
-    //}
-    while((tempFork!.key != null) | (tempFork.key != newFork.key)){
-      if (tempFork.key! > newFork.key!){
-        tempFork = tempFork.right;
-      }
-      if (tempFork!.key! < newFork.key!){
-        tempFork = tempFork.left;
-      }
+    final newFork = Fork(key, value);       // Добавляемый узел.
+    if (root == null){
+      root = newFork;
+      return;
     }
-    tempFork = newFork;
+    Fork tempFork = root!;
+
+    do {
+      if (tempFork.key == key){
+        tempFork.value = value;
+        return;
+      }
+
+      if (key > tempFork.key) {
+        if (tempFork.right != null) {
+          tempFork = tempFork.right!;
+        }
+        else {
+          tempFork.right = newFork;
+          return;
+        }
+      }
+
+      if (key < tempFork.key) {
+        if (tempFork.left != null) {
+          tempFork = tempFork.left!;
+        }
+        else {
+          tempFork.left = newFork;
+          return;
+        }
+      }
+    } while (true);           // Oops...
   }
   
-  int? valueAt(int keq){
-    
+  /// Ищет значение по индексу.
+  String? valueAt(int key){
+    if (root == null){
+      return null;
+    }
+
+    Fork tempFork = root!;
+    do {
+      if (tempFork.key == key){
+        return tempFork.value;
+      }
+
+      if (key > tempFork.key) {
+        if (tempFork.right != null) {
+          tempFork = tempFork.right!;
+        }
+        else {
+          return null;
+        }
+      }
+
+      if (key < tempFork.key) {
+        if (tempFork.left != null) {
+          tempFork = tempFork.left!;
+        }
+        else {
+          return null;
+        }
+      }
+    } while (true);           // Oops...
+
   }
 }
 
@@ -48,17 +100,6 @@ typedef bool BFuncOfInt(int? arg);          // Если вставить bool т
 
 */
 /*class SLList {
-  /// По идее, эта переменная должна быть приватной внутри класса.
-  /// Снаружи пользователи не должны видеть ее, тем более менять ее значение.
-  ///
-  /// Но если мы в тестах захотим проверить значение переменной, то ее
-  /// придется оставить публичной.
-  ///
-  /// Мы оставляем тут эту аннотацию, чтобы пользователи класса знали, что это
-  /// поле не для них, а для тестов. Анализатор будет показывать ошибки или
-  /// предупреждения при попытке использовать такие поля и методы.
-  @visibleForTesting                      
-// И на эту ругается.
 
   _Record? root;
 
