@@ -24,8 +24,7 @@ class BTree{
       root = newFork;
       return;
     }
-    Fork tempFork = root!;
-
+    Fork tempFork = root!;                  // Начинаем с корня.
     do {
       if (tempFork.key == key){
         tempFork.value = value;
@@ -51,96 +50,25 @@ class BTree{
           return;
         }
       }
-    } while (true);           // Oops...
+    } while (true);                              // Oops...
   }
   
   /// Ищет значение по индексу.
   String? valueAt(int key){
-    if (root == null){
-      return null;
-    }
-
-    Fork tempFork = root!;
-    do {
-      if (tempFork.key == key){
-        return tempFork.value;
-      }
-
-      if (key > tempFork.key) {
-        if (tempFork.right != null) {
+    Fork? tempFork = root!;                     // Начинаем с корня.
+    while (tempFork != null){
+      if (tempFork.key != key) {
+        if (key > tempFork.key) {
           tempFork = tempFork.right!;
         }
-        else {
-          return null;
-        }
-      }
-
-      if (key < tempFork.key) {
-        if (tempFork.left != null) {
+        if (key < tempFork.key) {
           tempFork = tempFork.left!;
         }
-        else {
-          return null;
-        }
       }
-    } while (true);           // Oops...
-
-  }
-}
-
-
-
-/*class _Record {
-  int? value;                               // Значение записи.
-  _Record? next;                            // Указатель на следующую ячейку.
-  _Record(this.value);                      // Конструктор.
-}
-  
-typedef bool BFuncOfInt(int? arg);          // Если вставить bool то где-то что-то ломается...
-
-*/
-/*class SLList {
-
-  _Record? root;
-
-*/
-/*
-  /// Ищет значение по индексу.
-  int? valueAt(int a){
-    int? n = 0;
-    _Record? rec = root;
-    if(a > length){
-      return null;
+      else {
+        return tempFork.value;
+      }
     }
-    else{
-      for(var i = 0; (i < a); i++){
-        n = rec!.value;
-        rec = rec.next;
-      };
-      return n;
-    };
+    return null;
   }
-*/
-/*
-  /// Удалить число по индексу.
-  void deletAt(int a){
-    int lng = length;
-    if((a < 0) || (a > (lng-1)) || (root == null)){ // Удалять нечего.
-      return;
-    };
-    if(a == 0){                                     // Удалить корневой элемент.
-      root = root!.next;
-      return;
-    };
-    if((0 < a) && (a < lng)){                       // Остальные случаи.
-      _Record? rec1 = root;
-      _Record? rec2;
-      for(var i = 0; (i < (a-1)); i++){
-        rec1 = rec1!.next;
-      };
-      rec2 = rec1!.next;
-      rec1.next = rec2!.next;
-      return;
-    };
-  }
-}*/
+}
