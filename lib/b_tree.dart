@@ -55,7 +55,7 @@ class BTree{
   
   /// Ищет значение по индексу.
   String? valueAt(int key){
-    Fork? tempFork = root!;                     // Начинаем с корня.
+    Fork? tempFork = root;                     // Начинаем с корня.
     while (tempFork != null){
       if (tempFork.key != key) {
         if (key > tempFork.key) {
